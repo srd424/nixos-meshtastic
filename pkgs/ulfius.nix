@@ -10,6 +10,7 @@
 , libgcrypt
 , curl
 , zlib
+, check, subunit
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -34,6 +35,15 @@ stdenv.mkDerivation (finalAttrs: {
     libgcrypt
     curl
     zlib
+  ];
+
+  checkInputs = [ check subunit ];
+
+  # some tests are non-pure, e.g. involve running http server
+  doCheck = false;
+
+  cmakeFlags = lib.optional finalAttrs.doCheck [
+    "-DBUILD_ULFIUS_TESTING=on"
   ];
 
   meta = with lib; {
