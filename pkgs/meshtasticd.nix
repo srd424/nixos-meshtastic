@@ -2,7 +2,6 @@
 , fetchurl
 , autoPatchelfHook
 , dpkg
-, makeWrapper
 , libgpiod_1
 , libyaml-cpp
 , ulfius
@@ -40,7 +39,9 @@ in stdenv.mkDerivation (finalAttrs: {
     inherit (srcVariant) hash;
   };
 
-  # https://meshtastic.org/docs/hardware/devices/linux-native-hardware/
+  nativeBuildInputs = [ autoPatchelfHook dpkg ];
+
+  unpackCmd = "dpkg-deb -x $curSrc source";
 
   # meshtasticd is compiled on debian bookworm
   # https://github.com/meshtastic/firmware/blob/master/Dockerfile
@@ -53,12 +54,6 @@ in stdenv.mkDerivation (finalAttrs: {
     openssl     # nixpkgs: 3.0.14, debian: 3.0.13
   ];
 
-  nativeBuildInputs = [ autoPatchelfHook dpkg makeWrapper ];
-
-  unpackCmd = "dpkg-deb -x $curSrc source";
-
-  ldLibraryPath = lib.strings.makeLibraryPath finalAttrs.buildInputs;
-
   installPhase = ''
     runHook preInstall
 
@@ -69,25 +64,7 @@ in stdenv.mkDerivation (finalAttrs: {
     cp -r etc $out/share
     cp -r usr/lib $out/share
 
-    # for file in $out/bin/*; do
-    #   chmod +w $file
-    #   patchelf --set-interpreter "${stdenv.cc.bintools.dynamicLinker}" \
-    #           --set-rpath ${lib.makeLibraryPath [ stdenv.cc.cc ]} \
-    #           $file
-    # done
-
     runHook postInstall
-  '';
-
-  postFixup = ''
-    # find $out -type f -executable | \
-    # while IFS= read -r f ; do
-    #   patchelf --set-interpreter "${stdenv.cc.bintools.dynamicLinker}" $f
-    #   wrapProgram $f \
-    #     "''${gappsWrapperArgs[@]}" \
-    #     --prefix LD_LIBRARY_PATH : "${finalAttrs.ldLibraryPath}" \
-    #     --prefix PATH : "${lib.makeBinPath [ libgpiod_1 ]}"
-    # done
   '';
 
   meta = with lib; {
@@ -95,6 +72,7 @@ in stdenv.mkDerivation (finalAttrs: {
     longDescription = ''
       meshtasticd is a Meshtastic daemon for Linux-native devices, utilizing
       portduino to run the firmware under Linux.
+      https://meshtastic.org/docs/hardware/devices/linux-native-hardware/
     '';
     homepage = "https://github.com/meshtastic/firmware";
     changelog = "https://github.com/meshtastic/firmware/releases/tag/v${finalAttrs.version}";
