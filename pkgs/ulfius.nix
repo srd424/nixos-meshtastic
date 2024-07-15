@@ -37,14 +37,30 @@ stdenv.mkDerivation (finalAttrs: {
     zlib
   ];
 
+  cmakeFlags = lib.optional finalAttrs.doCheck [
+    "-DBUILD_ULFIUS_TESTING=ON"
+  ];
+
+  doCheck = true;
   checkInputs = [ check subunit ];
 
-  # some tests are non-pure, e.g. involve running http server
-  doCheck = false;
+  # TODO: Update cmake hook to make it simpler to selectively disable cmake tests: #113829
+  checkPhase = let
+    disabledTests = [
+      "example_callbacks" # attempts to bind to port 8080
+      "core"  # test_ulfius_request_limits, test/core.c:693
+    ];
+  in ''
+    runHook preCheck
 
-  cmakeFlags = lib.optional finalAttrs.doCheck [
-    "-DBUILD_ULFIUS_TESTING=on"
-  ];
+    # certificates aren't created automatically when tests are run with ctest
+    cd ../test
+    ./cert/create-cert.sh
+    cd -
+
+    ctest --output-on-failure -E '^${lib.concatStringsSep "|" disabledTests}$'
+    runHook postCheck
+  '';
 
   meta = with lib; {
     description = "HTTP Framework for REST Applications in C";
