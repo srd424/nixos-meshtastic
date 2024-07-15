@@ -16,7 +16,7 @@ let
   srcVariant = {
     x86_64-linux = {
       arch = "amd64";
-      hash = lib.fakeHash;
+      hash = "sha256-tR/2bMpn87wcqZb9QX4MJV4c0vL3HVtsREDGx5QZCzY=";
     };
     aarch64-linux = {
       arch = "arm64";
