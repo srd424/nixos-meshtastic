@@ -4,8 +4,8 @@
 , dpkg
 , makeWrapper
 , libgpiod_1
-#, libyaml-cpp
-#, ulfius
+, libyaml-cpp
+, ulfius
 , orcania
 , openssl
 }:
@@ -47,10 +47,8 @@ in stdenv.mkDerivation (finalAttrs: {
   # https://packages.debian.org/search?suite=bookworm&keywords=keywords
   buildInputs = [
     libgpiod_1  # nixpkgs: 1.6.4, debian: 1.6.3
-    # https://github.com/jbeder/yaml-cpp
-    # libyaml-cpp # nixpkgs: -, debian: 0.7.0
-    # https://github.com/babelouest/ulfius/blob/master/INSTALL.md
-    # ulfius      # nixpkgs: -, debian: 2.7.13
+    libyaml-cpp # nixpkgs: -, debian: 0.7.0
+    ulfius      # nixpkgs: -, debian: 2.7.13
     orcania     # nixpkgs: 2.3.3, debian: 2.3.2
     openssl     # nixpkgs: 3.0.14, debian: 3.0.13
   ];
