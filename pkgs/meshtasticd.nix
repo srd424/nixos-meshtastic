@@ -15,11 +15,11 @@ let
   srcVariant = {
     x86_64-linux = {
       arch = "amd64";
-      hash = "sha256-Fo3FQ+5QAEOgHxi6Hnjsfd2t2lFNA934CWVgZM9DSUA=";
+      hash = lib.fakeHash;
     };
     aarch64-linux = {
       arch = "arm64";
-      hash = "sha256-6mN4Xe8wRHdkTW4fL1/9OICNnlp6IBZsZyXPq4VpGsM=";
+      hash = "sha256-cizEGQc/CUnHGNyL5NAIA1UYACnFr+DMakHl/6ZZTpo=";
     };
     armv7l-linux = {
       arch = "armhf";
@@ -29,7 +29,7 @@ let
 
 in stdenv.mkDerivation (finalAttrs: {
   pname = "meshtasticd";
-  version = "2.3.15.deb7c27";
+  version = "2.4.0.46d7b82";
 
   src = let
     baseUrl = "https://github.com/meshtastic/firmware/releases/download";
