@@ -57,7 +57,9 @@ in {
     };
 
     settings = mkOption {
-      type = settingsFormat.type;
+      type = types.submodule {
+        freeformType = settingsFormat.type;
+      };
       default = {};
       example = literalExpression ''
         {
@@ -139,11 +141,16 @@ in {
         # warning: meshtastic.service is ordered after 'network-online.target' but doesn't depend on it
         # after = [ "network-online.target" ];
         serviceConfig = {
-          Type = "simple";
           User = cfg.user;
           Group = cfg.group;
           UMask = "0077";
-          ExecStart = "${cfg.package}/bin/meshtasticd --config=${configFile} --fsdir=${cfg.dataDir} --port=${toString cfg.apiPort} ${escapeShellArgs cfg.extraFlags}";
+          ExecStart = lib.concatStringsSep " " [
+            "${cfg.package}/bin/meshtasticd"
+            "--config=${configFile}"
+            "--fsdir=${cfg.dataDir}"
+            "--port=${toString cfg.apiPort}"
+            (escapeShellArgs cfg.extraFlags)
+          ];
         };
       };
     };
