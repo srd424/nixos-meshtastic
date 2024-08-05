@@ -151,6 +151,8 @@ in {
             "--port=${toString cfg.apiPort}"
             (escapeShellArgs cfg.extraFlags)
           ];
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
     };
