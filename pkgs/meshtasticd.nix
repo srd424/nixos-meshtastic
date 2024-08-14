@@ -19,7 +19,7 @@ let
     };
     aarch64-linux = {
       arch = "arm64";
-      hash = "sha256-cizEGQc/CUnHGNyL5NAIA1UYACnFr+DMakHl/6ZZTpo=";
+      hash = "sha256-PLRSBX0bT2hb+HODHRi8Te3FpFRof2eAqH6WilZoXYQ=";
     };
     armv7l-linux = {
       arch = "armhf";
@@ -29,7 +29,7 @@ let
 
 in stdenv.mkDerivation (finalAttrs: {
   pname = "meshtasticd";
-  version = "2.4.0.46d7b82";
+  version = "2.4.1.394e0e1";
 
   src = let
     baseUrl = "https://github.com/meshtastic/firmware/releases/download";
