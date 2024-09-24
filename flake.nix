@@ -25,6 +25,11 @@
 
     nixosModules = {
       default = import ./modules/meshtastic.nix;
+
+      # Tries to automagically configure SPI and I2C on Raspberry Pi
+      # with `config.txt`
+      # requires nvmd/nixos-raspberrypi
+      raspberry-pi = import ./modules/raspberry-pi.nix;
     };
 
     packages = forSystems allSystems (system: let
