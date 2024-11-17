@@ -9,7 +9,7 @@ in {
 
   config = mkIf cfg.enable {
 
-    hardware.raspberry-pi.config.all.options = let
+    hardware.raspberry-pi.config.all.base-dt-params = let
       needsSpi = st.Lora ? spidev
               || st ? Display.spidev
               || st ? Touchscreen.spidev;
