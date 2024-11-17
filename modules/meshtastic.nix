@@ -123,6 +123,7 @@ in {
       };
       General = {
         MaxNodes = lib.mkDefault 200;
+        MaxMessageQueue = lib.mkDefault 100;
       };
     };
 
