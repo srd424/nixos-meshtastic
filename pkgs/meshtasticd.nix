@@ -15,20 +15,20 @@ let
   srcVariant = {
     x86_64-linux = {
       arch = "amd64";
-      hash = lib.fakeHash;
+      hash = "sha256-9s63FdXa+opXm82qsLX9t4JEFmbQ65YShXCrrxLdqG0=";
     };
     aarch64-linux = {
       arch = "arm64";
-      hash = "sha256-OULGfMs47BioyjT7h7jMk2PeVT2qcGNzaFwtDdcU/mY=";
+      hash = "sha256-vuW+yjOtQrqX9UWPMtWtJaAwUwB/2z/lbQPp3HGnwm4=";
     };
     armv7l-linux = {
       arch = "armhf";
-      hash = lib.fakeHash;
+      hash = "sha256-6HaFGMXsevAi/hmmxhTAqNMWF4r7S6dIn09sr9D0adg=";
     };
   }.${stdenv.hostPlatform.system} or unsupported;
 in stdenv.mkDerivation (finalAttrs: {
   pname = "meshtasticd";
-  version = "2.5.11.8e2a3e5";
+  version = "2.5.15.79da236";
 
   src = let
     baseUrl = "https://github.com/meshtastic/firmware/releases/download";
