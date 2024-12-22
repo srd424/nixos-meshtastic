@@ -141,6 +141,10 @@ in {
         wantedBy = [ "multi-user.target" ];
         # warning: meshtastic.service is ordered after 'network-online.target' but doesn't depend on it
         # after = [ "network-online.target" ];
+
+        startLimitIntervalSec = "200";
+        startLimitBurst = "5";
+
         serviceConfig = {
           User = cfg.user;
           Group = cfg.group;
@@ -152,6 +156,9 @@ in {
             "--port=${toString cfg.apiPort}"
             (escapeShellArgs cfg.extraFlags)
           ];
+          Restart = "always";
+          RestartSec = "3";
+
           StandardOutput = "journal";
           StandardError = "journal";
         };
